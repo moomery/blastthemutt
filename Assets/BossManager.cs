@@ -4,17 +4,23 @@ using System.Collections.Generic;
 public class Part
 {
     public Sprite sprite;
-    public Vector2[] weak_spot_candidates;
+    public List<Vector2> weak_spot_candidates;
 
-    public Part(Sprite sprite, Vector2[] weak_spot_candidats)
+    public Part(Sprite sprite, List<Vector2> weak_spot_candidates)
     {
         this.sprite = sprite;
         this.weak_spot_candidates = weak_spot_candidates;
     }
 }
 
+
+
 public class BossManager : MonoBehaviour
 {
+
+
+
+
     int lastIncrement = -1;
     public SpriteRenderer HEAD_RENDERER;
     List<Part> heads;
@@ -25,6 +31,7 @@ public class BossManager : MonoBehaviour
 
 List<Part> CreatePartArray(string folderA, string folderB)
 {
+    
     // Load Sprites instead of Texture2D
     Sprite[] folderASprites = Resources.LoadAll<Sprite>(folderA);
     Sprite[] folderBSprites = Resources.LoadAll<Sprite>(folderB);
@@ -67,11 +74,11 @@ List<Part> CreatePartArray(string folderA, string folderB)
             {
                 Color32 pixel = pixels[y * width + x];
                 if (pixel.a > 0)
-                    solidPixels.Add(new Vector2(x, y));
+                    solidPixels.Add(new Vector2(x - width/2, y - height/2));
             }
         }
 
-        partsList.Add(new Part(sprite, solidPixels.ToArray()));
+        partsList.Add(new Part(sprite, solidPixels));
     }
 
     return partsList;
@@ -83,6 +90,7 @@ List<Part> CreatePartArray(string folderA, string folderB)
         heads = CreatePartArray("heads", "head_spots");
         torsos = CreatePartArray("torsos", "torso_spots");
         legs = CreatePartArray("legs", "leg_spots");
+
     }
 
     // Update is called once per frame
@@ -95,9 +103,11 @@ List<Part> CreatePartArray(string folderA, string folderB)
 
             int index = UnityEngine.Random.Range(0, heads.Count);
             HEAD_RENDERER.sprite = heads[index].sprite;
-            index = UnityEngine.Random.Range(0, heads.Count);
+
+            index = UnityEngine.Random.Range(0, torsos.Count);
             TORSO_RENDERER.sprite = torsos[index].sprite;
-            index = UnityEngine.Random.Range(0, heads.Count);
+
+            index = UnityEngine.Random.Range(0, legs.Count);
             LEGS_RENDERER.sprite = legs[index].sprite;
             
         }
