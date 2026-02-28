@@ -71,3 +71,12 @@ if __name__ == "__main__":
         x3=128, y3=48,
         x4=128, y4=64
     )
+    crop_three_parts(
+        input_folder="full_weakspots",
+        output_folder="chopped_weakspots",
+        x1=32,
+        y1=32,
+        x2=128, y2=80,
+        x3=128, y3=48,
+        x4=128, y4=64
+    )
